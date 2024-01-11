@@ -50,11 +50,126 @@
       <max-request-size>20971520</max-request-size>
       <file-size-threshold>0</file-size-threshold>
     </multipart-config>
-    
   </servlet>
-  
   <servlet-mapping>
     <servlet-name>servlet_blog</servlet-name>
     <url-pattern>/servlet_blog</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>mes_blogs</display-name>
+    <servlet-name>mes_blogs</servlet-name>
+    <servlet-class>servlet.mes_blogs</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>mes_blogs</servlet-name>
+    <url-pattern>/mes_blogs</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>up_del</display-name>
+    <servlet-name>up_del</servlet-name>
+    <servlet-class>servlet.up_del</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>up_del</servlet-name>
+    <url-pattern>/up_del</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>com_serv</display-name>
+    <servlet-name>com_serv</servlet-name>
+    <servlet-class>servlet.com_serv</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>com_serv</servlet-name>
+    <url-pattern>/com_serv</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>user_up</display-name>
+    <servlet-name>user_up</servlet-name>
+    <servlet-class>servlet.user_up</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>user_up</servlet-name>
+    <url-pattern>/user_up</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>quiz</display-name>
+    <servlet-name>quiz</servlet-name>
+    <servlet-class>servlet.quiz</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>quiz</servlet-name>
+    <url-pattern>/quiz</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>acceuil</display-name>
+    <servlet-name>acceuil</servlet-name>
+    <servlet-class>servlet.acceuil</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>acceuil</servlet-name>
+    <url-pattern>/acceuil</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>paint_track</display-name>
+    <servlet-name>paint_track</servlet-name>
+    <servlet-class>servlet.paint_track</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>paint_track</servlet-name>
+    <url-pattern>/paint_track</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>diagnostic</display-name>
+    <servlet-name>diagnostic</servlet-name>
+    <servlet-class>servlet.diagnostic</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>diagnostic</servlet-name>
+    <url-pattern>/diagnostic</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>liste_pain</display-name>
+    <servlet-name>liste_pain</servlet-name>
+    <servlet-class>servlet.liste_pain</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>liste_pain</servlet-name>
+    <url-pattern>/liste_pain</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>profile_servlet</display-name>
+    <servlet-name>profile_servlet</servlet-name>
+    <servlet-class>servlet.profile_servlet</servlet-class>
+    <multipart-config>
+      <location>C:\Users\hp\Desktop\java\tampan</location>
+      <max-file-size>10485760</max-file-size>
+      <max-request-size>20971520</max-request-size>
+      <file-size-threshold>0</file-size-threshold>
+    </multipart-config>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>profile_servlet</servlet-name>
+    <url-pattern>/profile_servlet</url-pattern>
+    
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>imgservlet</display-name>
+    <servlet-name>imgservlet</servlet-name>
+    <servlet-class>servlet.imgservlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>imgservlet</servlet-name>
+    <url-pattern>/imgservlet</url-pattern>
   </servlet-mapping>
 </web-app>

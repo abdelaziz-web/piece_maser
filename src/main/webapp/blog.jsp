@@ -63,68 +63,39 @@
 
     <div class="container">
         <div class="row my-3">
-        
-        
-            <div class="col-md-3 mx-5  "> 
-                    <div class="card" style="width: 18rem; ">
-                        <img src="pain.png" class="card-img-top" alt="..." style="height: 200px; ">
-                        <div class="card-body">
-                          <h5 class="card-title">Card title</h5>
-                          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        </div>
-                        <ul class="list-group list-group-flush">
-                          <li class="list-group-item">An item</li>
-                          <li class="list-group-item">A second item</li>
-                          <li class="list-group-item">A third item</li>
-                        </ul>
-                        <div class="card-body">
-                          <a href="#" class="card-link">Les commentaires</a>
-                         
-                        </div>
-                     </div>
-                  </div>
                   
-                  
-                     <div class="col-md-3 mx-5  ">
-                      <div class="card" style="width: 18rem; ">
-                        <img src="pain.png" class="card-img-top" alt="..." style="height: 200px; ">
-                        <div class="card-body">
-                          <h5 class="card-title">Card title</h5>
-                          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        </div>
-                        <ul class="list-group list-group-flush">
-                          <li class="list-group-item">An item</li>
-                          <li class="list-group-item">A second item</li>
-                          <li class="list-group-item">A third item</li>
-                        </ul>
-                        <div class="card-body">
-                          <a href="#" class="card-link">Les commentaires</a>
-                        </div>
-                      </div>
-                   </div>
-                   
-                   
                     <%@ page import="dao.blog" %>
+<%@ page import="java.net.URLEncoder" %>
+<%@ page import="java.nio.charset.StandardCharsets" %>
 
        
     
     <c:forEach items="${list}" var="li">
+     
+    
        
+        
         
         <div class="col-md-3 mx-5 my-5 ">
                       <div class="card" style="width: 18rem; ">
-                        <img src="${li.photo}" class="card-img-top" alt="..." style="height: 200px; ">
+                 <!--       <img src="${li.photo}" class="card-img-top" alt="..." style="height: 200px; "> -->
+                         
+                          <img src="imgservlet?id=${li.photo}" class="card-img-top" alt="..." style="height: 200px;">
+
                         <div class="card-body">
                           <h5 class="card-title">${li.title}</h5>
-                          <p class="card-text">${li.title}</p>
+                          <p class="card-text"></p>
                         </div>
                         <ul class="list-group list-group-flush">
-                          <li class="list-group-item">An item</li>
-                          <li class="list-group-item">A second item</li>
-                          <li class="list-group-item">A third item</li>
+                          <li class="list-group-item">${li.created_at}</li>
+                          <li class="list-group-item">created at :${li.description}</li>
                         </ul>
                         <div class="card-body">
-                          <a href="#" class="card-link">Les commentaires</a>
+                         <form action="com_serv" method="get">
+                        <input type="hidden" name="id_blog" value="${li.blog_id}">
+                        <button type="submit" class="btn btn-primary">Les commentaires </button>
+                        </form>
+
                         </div>
                       </div>
                    </div>
@@ -132,7 +103,6 @@
         
         
     </c:forEach>
-
                    
                    
                 
@@ -237,7 +207,7 @@
           <div class="container">
             <p>
               &copy; <span id="displayYear"></span> All Rights Reserved By
-              <a href="https://html.design/">Free Html Templates</a>
+             
             </p>
           </div>
         </footer>

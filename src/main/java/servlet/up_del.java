@@ -6,43 +6,38 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import org.apache.tomcat.util.http.fileupload.FileItem;
 
 import dao.DAOFactory;
 import dao.blog;
 import dao.blog_impl;
-import dao.user;
-
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Paths;
 
 /**
- * Servlet implementation class servlet_blog
+ * Servlet implementation class up_del
  */
-
 @MultipartConfig
-public class servlet_blog extends HttpServlet {
+public class up_del extends HttpServlet {
+	
 	private static final long serialVersionUID = 1L;
 	public static final int TAILLE_TAMPON = 10240 ;
     public static final String CHEMIN_FICHIER = "C:\\Users\\hp\\Desktop\\aa\\" ;   
     /**
+       
+    /**
      * @see HttpServlet#HttpServlet()
      */
-    
-
-    public servlet_blog() {
+    public up_del() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -51,80 +46,60 @@ public class servlet_blog extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+	
+		String entier= request.getParameter("id");
+		   
+		int id = Integer.parseInt(entier);
 		
+		if(request.getParameter("type").equals("del") ) {
 		
-		blog blog_1 = new blog() ; 
-        blog_impl blog_im = new blog_impl(DAOFactory.getInstance()) ;
-        List<blog> listeDeBlogs = new ArrayList<>();
-        listeDeBlogs = blog_im.getall() ;
-        
-        
-        if(listeDeBlogs != null ) {
-          
-        		for (int i = 0; i < listeDeBlogs.size(); i++) {
-        	        blog b_i = listeDeBlogs.get(i);
-        	        System.out.println("Avant encodage - ID : " + b_i.getBlog_id());
-        	        String encodedPhoto = URLEncoder.encode(b_i.getPhoto(), StandardCharsets.UTF_8.toString());
-        	        b_i.setPhoto(encodedPhoto);
-        	        listeDeBlogs.set(i, b_i);  // Mettez à jour l'objet dans la liste
-        	    }       
-        	
-        }
-        
-         
-        request.setAttribute("list", listeDeBlogs); 
-        this.getServletContext().getRequestDispatcher("/blog.jsp").forward( request, response );
+        blog_impl blog_imp = new blog_impl(DAOFactory.getInstance()) ;
+		
+		blog_imp.delete(id);
+		
+		response.sendRedirect("mes_blogs");}
+		 
+		 else {
 
-		
+         request.setAttribute("id", id) ; 
+         
+         this.getServletContext().getRequestDispatcher("/update_blog.jsp").forward( request, response );
+			 
+		 }
+	
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		
 		
 		String titre = request.getParameter("titre");
         String description = request.getParameter("description");
-        int author_id = Integer.parseInt( request.getParameter("author_id")); 
        
+        int     id      = Integer.parseInt( request.getParameter("blog_id"));
         
      
   
         Part filePart = request.getPart("plan");
-        
-        
-        
+   
         String fileName = getFileName(filePart);;
       //  private String getFileName(final Part part) {
-	       
-        LocalDate currentDate = LocalDate.now();
 
-        // Créez un objet DateTimeFormatter avec le format souhaité
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
-        // Formatez la date actuelle en tant que chaîne
-        String formattedDate = currentDate.format(formatter);
         
-        blog blog_1=  new blog(titre,formattedDate,author_id,description,CHEMIN_FICHIER+fileName) ;
+        blog blog_1=  new blog( id,  titre,   description,  CHEMIN_FICHIER+fileName) ;
        	        
         blog_impl blog_im = new blog_impl(DAOFactory.getInstance()) ;
         
-        blog_im.create(blog_1) ;
+        blog_im.update(blog_1);
         
         ecrire_fichier(filePart,fileName,CHEMIN_FICHIER) ;
         
-        request.setAttribute("message", "l'élement a bien éte enregisterer") ;
-     
-      //  HttpSession session = request.getSession();
+       request.setAttribute("message", "l'élement a bien éte modifié") ;
+       
+       request.setAttribute("id", id) ; 
         
-      //   user user_1 =   (user) session.getAttribute("user");
-         
-     //    System.out.println(user_1.getId());
-        
-       this.getServletContext().getRequestDispatcher("/ajouter_blog.jsp").forward( request, response ); 
+       this.getServletContext().getRequestDispatcher("/update_blog.jsp").forward( request, response ); 
 	
 	
 		
@@ -197,7 +172,4 @@ public static String generateRandomName(int NAME_LENGTH) {
  
  
 }
-
-
-
 }

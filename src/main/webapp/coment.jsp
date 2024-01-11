@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 
@@ -13,7 +13,6 @@
   <!-- Site Metas -->
   <meta name="keywords" content="" />
   <meta name="description" content="" />
-  <meta name="author" content="" />
 
   <style>
   .image-arrondie {
@@ -26,7 +25,7 @@
 
   <!-- bootstrap core css -->
   <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
-
+ <script src="https://code.jquery.com/jquery-3.6.4.js"></script>
   <!-- fonts style -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
 
@@ -44,71 +43,109 @@
   <!-- responsive style -->
   <link href="css/responsive.css" rel="stylesheet" />
 
+<style>
+        /* Ajouter une classe personnalisée pour minimiser la taille de la carte */
+        .minimize-card {
+            max-width: 500px; /* Ajustez la largeur maximale selon vos besoins */
+        }
+        
+        .usr-img{
+         height: 5rem;
+         width: 5rem;
+       }
+    </style>
+
 </head>
 
 <body>
-<%@ page import="java.util.*" %>
 
-<%@ page import="dao.user" %>
-    <%
-    // Récupérer la session à partir de l'objet implicite "session"
-    HttpSession sess = request.getSession();
-
-    // Utiliser la session comme nécessaire
-    user user_1 = (user) sess.getAttribute("user");
-
-    // Autres traitements...
-
-    // Par exemple, afficher la valeur en session
-    int id = user_1.getId() ;
-%>
-    
-
-
-
-
-      <% String message = (String) request.getAttribute("message"); %>
-    
-
-              <%-- Utiliser out.println pour afficher le message --%>
-              <% if (message != null && !message.isEmpty()) { %>
-              <div class="alert alert-danger" role="alert">
-             <button type="button" class="btn btn-primary btn-lg">   <%= message %>  </button>
-              </div>
-        
-              <% } %> 
-    
-
-  <div class="hero_area">
+ 
 
     <%@include file="navbar.jsp" %>
-<div class="container my-5">
-    <div class="row">
-        <div class="col-md-6 mx-auto text-center border border-success rounded p-4">
-            
-            <form action="servlet_blog" method="post"  enctype="multipart/form-data">
-                <div class="mb-3">
-                    <label for="exampleInputEmail1" class="form-label">Title :</label>
-                    <input type="text" class="form-control" name="titre" id="exampleInputEmail1" aria-describedby="emailHelp" required>
-                    
-                </div>
-                <div class="mb-3">
-                    <label for="exampleInputPassword1" class="form-label">description :</label>
-                    <input type="text" class="form-control"  name="description" id="exampleInputPassword1" required>
-                </div>
-                <div class="mb-3">
-                <label for="exampleInputfile" class="form-label">business plan</label>
-                <input type="file" class="form-control" id="exampleInputfile" name="plan">
-                </div>
-                <input type="hidden" name="author_id" value="<%= id %>">
-                
-                <button type="submit" class="btn btn-success">Submit</button>
-            </form>
-        </div>
-    </div>
-</div>
 
+
+ <%@ page import="dao.blog" %>
+
+     
+     <div class="hero_area my-5" >
     
+    
+    </div>
+   <%@ page import="java.util.List" %>
+   
+   <%@ page import="dao.user" %> 
+   
+   <% 
+        List<user> userList = (List<user>) request.getAttribute("users");
+        int i = 0 ;
+    %>
+   
+   
+   <input type="hidden" id="blog_id"  value="${blog.blog_id}">
+   <input type="hidden" id="author_id" value="${user.id}">
+   <input type="hidden" id="username" value="${user.username}">
+                   
+   
+    <div >
+           
+           
+           <div class="card mb-3 minimize-card mx-auto">
+           <img src="imgservlet?id=${blog.photo}" class="img-fluid" alt="...">
+           <div class="card-body">
+           <h5 class="card-title">${blog.title}</h5>
+           <p class="card-text">${blog.description}</p>
+           <p class="card-text"><small class="text-body-secondary">Last updated : ${blog.created_at} </small></p>
+           </div>   
+           </div> 
+               
+           <c:forEach items="${list_com}" var="li">    
+               
+               
+           <div class="card mb-3 minimize-card mx-auto">
+           <img src="rsz.png" class="usr-img"  alt="...">
+           <div class="my-2" > 
+           
+             username :  <%=userList.get(0).getUsername()%>        
+            </div> 
+           <% i=i+1 ;     %> 
+           <div class="border p-3">
+           <!-- Le contenu de votre div va ici -->
+           <p>${li.content}</p>
+           </div>
+           </div> 
+           </c:forEach>
+
+            <div id="1" >
+           
+           
+           </div>
+
+
+            <div class="card mb-3 minimize-card mx-auto">
+           <img src="rsz.png" class="usr-img"  alt="...">
+           <div class="my-2" > 
+           
+           
+            username :  ${user.username}
+            
+            </div> 
+            
+            
+           
+           <div class="border p-3">
+           
+           
+           
+           <input id ="id_input" type="text" class="form-control" placeholder="Enter something..." onclick="envoyerFormulaire()">
+  
+  
+           <button type="button" class="btn btn-primary" onclick="envoyerFormulaire()">Cliquez-moi</button>
+           </div>
+           </div>
+       
+           </div>
+         
+      
 
 
         <section class="info_section ">
@@ -197,6 +234,82 @@
           </div>
         </section>
         <!-- end info_section -->
+        
+      
+
+      <script>
+    
+      function envoyerFormulaire() {
+          // Récupérer les données du formulaire
+        
+          
+          var valeurInput = document.getElementById("id_input").value;
+          
+          if (valeurInput.trim() !== "") {
+          
+          var urlOriginal = "http://localhost:8080/paincare/com_serv";
+
+          // Créer un objet XMLHttpRequest
+          var xhr = new XMLHttpRequest();
+
+          // Configurer la requête
+          xhr.open("POST", urlOriginal, true);
+          xhr.setRequestHeader("Content-Type",  "application/json");
+
+          // Définir la fonction à exécuter lorsque la requête est terminée
+          xhr.onreadystatechange = function() {
+              if (xhr.readyState === 4 && xhr.status === 200) {
+                  // La requête a réussi
+                  console.log('Données envoyées avec succès:', xhr.responseText);
+              } else if (xhr.readyState === 4 && xhr.status !== 200) {
+                  // La requête a échoué
+                  console.error('Erreur lors de l\'envoi des données:', xhr.status, xhr.statusText);
+              }
+          };
+   
+          var blog_id = document.getElementById("blog_id").value;
+
+          var author_id = document.getElementById("author_id").value;
+         
+          var donnees = [valeurInput, blog_id,author_id];
+          
+          var donneesSerialisees = JSON.stringify(donnees);
+
+          // Envoyer la requête avec les données du formulaire
+          xhr.send(donneesSerialisees);
+          
+          setTimeout(function() {
+        	    // Cacher l'attente après le délai
+        	    hideLoading();
+        	}, 1000);
+          
+          inserer(valeurInput) ;
+          
+          } else {
+              // La valeur de l'input est vide, afficher un message ou effectuer d'autres actions si nécessaire
+              alert('La valeur de l\'input est vide. Aucune requête ne sera envoyée.');
+          }
+          document.getElementById("id_input").value = "";
+          
+          
+ 
+      }
+         
+   function inserer(content){
+	   
+	   var nouvelElement = document.createElement("div");
+	   nouvelElement.className = "card mb-3 minimize-card mx-auto";
+       var username = document.getElementById("username").value;
+       nouvelElement.innerHTML = '<img src="rsz.png" class="usr-img" alt="..."> <div class="my-2"> username : ' + username + ' </div><div class="border p-3"> <p> ' + content + ' </p> </div> '  ;
+        console.log(content) ;
+        console.log(username) ;
+
+       var conteneur = document.getElementById("1");
+       conteneur.appendChild(nouvelElement);
+       
+   }  
+ 
+</script>
       
       
         <!-- footer section -->
@@ -204,13 +317,14 @@
           <div class="container">
             <p>
               &copy; <span id="displayYear"></span> All Rights Reserved By
+              <a href="https://html.design/">Free Html Templates</a>
             </p>
           </div>
         </footer>
         <!-- footer section -->
 
 
-
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script src="https://cdn.rawgit.com/image-resizer/resizer/master/src/resizer.js"></script>
 <!-- À la fin de la balise body -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>

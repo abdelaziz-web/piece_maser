@@ -39,6 +39,17 @@ public class blog {
 	}
 
 
+	public blog(int id, String titre, String description2, String photo) {
+		
+		super();
+		this.blog_id = id;
+		this.title = titre;
+		this.description = description2 ;
+		this.photo = photo;
+		
+		
+	}
+
 	public String getPhoto() {
 		return photo;
 	}

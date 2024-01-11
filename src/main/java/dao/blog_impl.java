@@ -14,10 +14,7 @@ import dao.DAOException;
 
 public class blog_impl implements blog_interface {
 
-	
-	
-	
-	
+
 	private DAOFactory        daoFactory;
 	
 
@@ -225,7 +222,7 @@ public class blog_impl implements blog_interface {
 	                int author_id = resultSet.getInt("author_id");
 	                String photo = resultSet.getString("photo");
 
-	               blog blog_1 = new blog( id,author_id ,titre, description, created_at,photo); 
+	               blog blog_1 = new blog( id,author_id ,titre, created_at, description,photo); 
 	               listeblog.add(blog_1) ;  
 	        	
 	        }
@@ -239,7 +236,47 @@ public class blog_impl implements blog_interface {
 	 //   System.out.println("Le nombre d'éléments dans la liste est : " + nombreElements);
 	    
 	    return listeblog ;	
+	}
+	    
+	    public blog blog_id(int id_1) throws DAOException {
+			// TODO Auto-generated method stub
+			
+			final String SQL_SELECT = "SELECT * FROM blogs WHERE blog_id  = ?;" ;
+			
+			Connection connexion = null;
+		    PreparedStatement preparedStatement = null;
+		    ResultSet resultSet = null;
+		   blog blog_2 = null ;
+		    ArrayList<blog> listeblog = new ArrayList<>();
+		    try {
+		        /* Récupération d'une connexion depuis la Factory */
+		        connexion = daoFactory.getConnection();
+		        preparedStatement = initRequestPrepare( connexion, SQL_SELECT, id_1);
+		        resultSet = preparedStatement.executeQuery();
+		        /* Parcours de la ligne de données de l'éventuel ResulSet retourné */
+		        while ( resultSet.next() ) {
+		            
+		        	    int id = resultSet.getInt("blog_id");
+		                String titre = resultSet.getString("title");
+		                String description = resultSet.getString("description");
+		                String created_at = resultSet.getString("created_at");
+		                int author_id = resultSet.getInt("author_id");
+		                String photo = resultSet.getString("photo");
 
+		               blog blog_1 = new blog( id,author_id ,titre, created_at, description,photo); 
+		               blog_2 = blog_1 ;  
+		        	
+		        }
+		    } catch ( SQLException e ) {
+		        throw new DAOException( e );
+		    } finally {
+		        //ClosingAll( resultSet, preparedStatement, connexion );
+		    }
+
+		 //   int nombreElements = listeInvestisseur.size();
+		 //   System.out.println("Le nombre d'éléments dans la liste est : " + nombreElements);
+		    
+		    return blog_2 ;	
 	
 	}
 

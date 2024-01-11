@@ -59,7 +59,7 @@ public   class user_impl  implements  user_interface  {
 	   	@Override
 		public Boolean create(user user_1) throws DAOException {
 			
-			  final String SQL_INSERT = "INSERT INTO  users (full_name,email ,password,phone_number	,date_of_birth,username) VALUES (?,?,?,?,?,?) ;"  ;
+			  final String SQL_INSERT = "INSERT INTO  users (full_name,email ,password,phone_number	,date_of_birth,photo_path,username) VALUES (?,?,?,?,?,?,?) ;"  ;
    			
 			  Boolean email_valider = true ;	
 			  
@@ -75,8 +75,9 @@ public   class user_impl  implements  user_interface  {
 			        		,user_1.getEmail()
 			        		,user_1.getPassword()
 			                ,user_1.getPassword()
-			                ,user_1.getDate_of_birth()
-			                ,user_1.getUsername());
+			                ,user_1.getDate_of_birth(),
+			                "C:\\Users\\hp\\Desktop\\zwin\\paincare\\src\\main\\webapp\\women.png ",
+			                user_1.getUsername());
 			       preparedStatement.execute();
 			        /* Parcours de la ligne de données de l'éventuel ResulSet retourné */
 			        
@@ -145,8 +146,8 @@ public   class user_impl  implements  user_interface  {
 		public void update(user user_1) throws DAOException {
 			// TODO Auto-generated method stub
 			
-			final String SQL_SELECT_Update = "UPDATE blogs SET full_name = ?, username = ?, email"
-					+ " phone_number = ? ,date_of_birth = ?, photo_path  =  ?, password = ?   WHERE user_id = ? ;";
+			final String SQL_SELECT_Update = "UPDATE users SET full_name = ?, username = ?, email =? ,"
+					+ " phone_number = ? ,date_of_birth = ?, photo_path	= ? , password = ?   WHERE user_id = ? ;";
 			
 			
 			Connection connexion = null;
@@ -163,7 +164,8 @@ public   class user_impl  implements  user_interface  {
 		                user_1.getPhone_number(),
 		                user_1.getDate_of_birth(),
 		                user_1.getPhoto(),
-		                user_1.getPassword() 
+		                user_1.getPassword() ,
+		                user_1.getId()
 		                );
 		        preparedStatement.execute();
 		        /* Parcours de la ligne de données de l'éventuel ResulSet retourné */
@@ -203,5 +205,35 @@ public   class user_impl  implements  user_interface  {
 		    }
 			
 		}
+		
+		public user user_id(int id) throws DAOException {
+			  
+		    user user_1 =  new user()  ;
+		
+		    final String SQL_SELECT_PAR_NOM = "SELECT * FROM users WHERE user_id = ?  ; ";
+		    Connection connexion = null;
+		    PreparedStatement preparedStatement = null;
+		    ResultSet resultSet = null;
+		 //   PersonBean personBean = null;
+
+		    try {
+		        /* Récupération d'une connexion depuis la Factory */
+		        connexion = daoFactory.getConnection();
+		        preparedStatement = initRequestPrepare( connexion, SQL_SELECT_PAR_NOM, id );
+		        resultSet = preparedStatement.executeQuery();
+		        /* Parcours de la ligne de données de l'éventuel ResulSet retourné */
+		        if ( resultSet.next() ) {
+		        	user_1 = map( resultSet );     
+		        }else {
+		        	user_1 = null ;
+		        }
+		    } catch ( SQLException e ) {
+		        throw new DAOException( e );
+		    } finally {
+		        //ClosingAll( resultSet, preparedStatement, connexion );
+		    }
+
+		    return user_1;       
+	}
 
 		}

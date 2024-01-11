@@ -1,8 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-  
-    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-    <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
 <!DOCTYPE html>
 <html>
 
@@ -49,83 +47,62 @@
 </head>
 
 <body>
+<%@ page import="java.util.*" %>
 
-<%@ page import="java.util.concurrent.atomic.AtomicInteger" %>
-
+<%@ page import="dao.user" %>
+    
 <%
-    // Récupérer la variable depuis la portée de la demande
-    AtomicInteger counter = (AtomicInteger) request.getAttribute("counter");
+Object  id = request.getAttribute("id") ;
 
-    // Vérifier si la variable existe, sinon initialiser à zéro
-    if (counter == null) {
-        counter = new AtomicInteger(0);
-    }
-
-    // Incrémenter la variable
-    int incrementedValue = counter.incrementAndGet();
-
-    // Enregistrer la variable dans la portée de la demande
-    request.setAttribute("counter", counter);
+    
 %>
+
+
+      <% String message = (String) request.getAttribute("message"); %>
+    
+
+              <%-- Utiliser out.println pour afficher le message --%>
+              <% if (message != null && !message.isEmpty()) { %>
+              <div class="alert alert-danger" role="alert">
+             <button type="button" class="btn btn-primary btn-lg">   <%= message %>  </button>
+              </div>
+        
+              <% } %> 
+    
 
   <div class="hero_area">
 
     <%@include file="navbar.jsp" %>
-    
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-6 mx-auto text-center border border-success rounded p-4">
+            
+            <form action="up_del" method="post"  enctype="multipart/form-data">
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label">Title :</label>
+                  <input type="text" class="form-control" name="titre" id="exampleInputEmail1" aria-describedby="emailHelp" required>
+                    
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">description :</label>
+                    <input type="text" class="form-control"  name="description" id="exampleInputPassword1"  required>
+                </div>
+                <div class="mb-3">
+                <label for="exampleInputfile" class="form-label">business plan</label>
+                <input type="file" class="form-control" id="exampleInputfile" name="plan">
+                </div>
+                <input type="hidden" name="blog_id" value="<%= id %>">
+                
+                <button type="submit" class="btn btn-success">Submit</button>
+            </form>
+        </div>
     </div>
-    
-    
-    <%@ page import="java.util.*" %>
-    
-    
-    <%@ page import="dao.blog" %>
+</div>
 
-   <div class="my-5 mx-5" >
-    <table class="table">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">title</th>
-      <th scope="col">description</th>
-      <th scope="col">created_at</th>
-      <th scope="col">photo</th>
-      <th scope="col">Update</th>
-      <th scope="col">Delete</th>
-    </tr>
-  </thead>
-  <tbody>
-  <c:forEach items="${liste}" var="li">
-   
-    <tr>
-      <th scope="row"><p> <%= counter.incrementAndGet()-1 %></p></th>
-      <td>${li.title}</td>
-      <td>${fn:substring(li.description, 0,20)}...</td>
-      <td>${li.created_at}</td>
-      <td>  ${fn:substring(li.photo, 0,20)}... </td>
-      <td>
-      <form action="up_del" method="get">
-                <input type="hidden" name="type" value="up" />
-                <input type="hidden" name="id" value="${li.blog_id}" />
-                <button type="submit" class="btn btn-primary">Update</button>
-            </form>
-      </td>
-      <td><form action="up_del" method="get">
-                 <input type="hidden" name="type" value="del" />
-                <input type="hidden" name="id" value="${li.blog_id}" />
-                <button type="submit" class="btn btn-danger">Delete</button>
-            </form>
-            </td>
-    </tr>
-      </c:forEach>
-  </tbody>
-</table>
+    
 
 
-   
-   </div>  
-    
-    
- <section class="info_section ">
+        <section class="info_section ">
           <div class="container">
             <div class="info_top">
               <div class="info_logo">
@@ -218,12 +195,19 @@
           <div class="container">
             <p>
               &copy; <span id="displayYear"></span> All Rights Reserved By
-              
+         
             </p>
           </div>
-        </footer>   
-    
-    
-    
-    </body>
-    </html>
+        </footer>
+        <!-- footer section -->
+
+
+
+<script src="https://cdn.rawgit.com/image-resizer/resizer/master/src/resizer.js"></script>
+<!-- À la fin de la balise body -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-Xgcf1dLEq3Rnxn5ZrzCzjL3U2w8LUjZPfwz1uxHv3HKaC0ft56E7m3Lvzr5UJo4K" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+WyL/JqIcF5k9UJeg6KfNUAtGUKRveJ8Z9W" crossorigin="anonymous"></script>
+<!-- Votre fichier JavaScript personnalisé peut être ajouté ici -->
+
+</body>

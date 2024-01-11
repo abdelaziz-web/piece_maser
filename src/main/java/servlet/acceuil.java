@@ -5,18 +5,25 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
 import java.io.IOException;
 
+import beans.diagno;
+import dao.DAOFactory;
+import dao.diagno_impl;
+import dao.user;
+
 /**
- * Servlet implementation class general_servlet
+ * Servlet implementation class acceuil
  */
-public class general_servlet extends HttpServlet {
+public class acceuil extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public general_servlet() {
+    public acceuil() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -25,8 +32,23 @@ public class general_servlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		request.getRequestDispatcher("/general.jsp").forward(request, response);
+		
+		
+		 HttpSession session = request.getSession();
+		
+		 user user_1 = (user) session.getAttribute("user");
+		 
+		 request.setAttribute("user", user_1) ;
+		 
+		 diagno diag = new diagno() ;
+		 
+		 diagno_impl d_impl = new diagno_impl(DAOFactory.getInstance()) ;
+		 
+		   diag = d_impl.last_score(user_1.getId()) ;
+		   
+		   request.setAttribute("diag", diag) ;
+		
+		this.getServletContext().getRequestDispatcher("/ac.jsp").forward( request, response );
 	}
 
 	/**
@@ -34,19 +56,7 @@ public class general_servlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		
-		String type = request.getParameter("type");
-	
-
-		if (type.equals("Login")) {
-			request.getRequestDispatcher("/login.jsp").forward(request, response);
-		} 
-		else {
-			request.getRequestDispatcher("/sign_up.jsp").forward(request, response);
-		}
-	
-		
-		
+		doGet(request, response);
 	}
 
 }
